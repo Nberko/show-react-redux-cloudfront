@@ -36,3 +36,7 @@ Open https://ddmswlyuv30b2.cloudfront.net in browser – the app is available gl
 Links
 	•	CloudFront URL: https://ddmswlyuv30b2.cloudfront.net
 	•	S3 Bucket Name: deploywebappstack-deploymentfrontendbucket67ceb713-baqkestilsbo
+
+## Submission
+- CloudFront: https://ddmswlyuv30b2.cloudfront.net
+- S3 Bucket: deploywebappstack-deploymentfrontendbucket67ceb713-baqkestilsbo
