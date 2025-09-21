@@ -1,8 +1,24 @@
 import axios, { AxiosError } from "axios";
-import API_PATHS from "~/constants/apiPaths";
-import { AvailableProduct } from "~/models/Product";
+import { Product, AvailableProduct } from "~/models/Product";
+import { fetchProducts, fetchProductById } from "~/api/products";
 import { useQuery, useQueryClient, useMutation } from "react-query";
 import React from "react";
+import API_PATHS from "~/constants/apiPaths";
+
+export function useProducts() {
+  return useQuery<Product[], AxiosError>("products", fetchProducts);
+}
+
+export function useProduct(id?: string) {
+  return useQuery<Product, AxiosError>(
+    ["product-detail", { id }],
+    async () => {
+      if (!id) throw new Error("Product ID is required");
+      return await fetchProductById(id);
+    },
+    { enabled: !!id }
+  );
+}
 
 export function useAvailableProducts() {
   return useQuery<AvailableProduct[], AxiosError>(
@@ -16,14 +32,6 @@ export function useAvailableProducts() {
   );
 }
 
-export function useInvalidateAvailableProducts() {
-  const queryClient = useQueryClient();
-  return React.useCallback(
-    () => queryClient.invalidateQueries("available-products", { exact: true }),
-    []
-  );
-}
-
 export function useAvailableProduct(id?: string) {
   return useQuery<AvailableProduct, AxiosError>(
     ["product", { id }],
@@ -34,6 +42,14 @@ export function useAvailableProduct(id?: string) {
       return res.data;
     },
     { enabled: !!id }
+  );
+}
+
+export function useInvalidateAvailableProducts() {
+  const queryClient = useQueryClient();
+  return React.useCallback(
+    () => queryClient.invalidateQueries("available-products", { exact: true }),
+    []
   );
 }
 
