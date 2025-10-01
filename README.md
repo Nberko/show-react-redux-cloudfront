@@ -1,3 +1,34 @@
+# My Store App
+
+## Features
+- Product catalog with real backend integration (AWS Lambda + DynamoDB)
+- Add to cart, checkout, and order management
+- Admin panel for product management
+- Modern UI with Material-UI
+- Automated deployment to S3 + CloudFront (CDK)
+
+## Backend API
+- GET /products — list all products (with stock count)
+- GET /products/{productId} — get product by ID
+- POST /products — create new product
+
+API base: https://b5x9a7w5n8.execute-api.eu-central-1.amazonaws.com/prod
+
+## How to run locally
+
+1. Install dependencies:
+   ```bash
+   npm install
+   ```
+2. Create `.env` file:
+   ```env
+   VITE_API_BASE=https://b5x9a7w5n8.execute-api.eu-central-1.amazonaws.com/prod
+   ```
+3. Start dev server:
+   ```bash
+   npm run start
+   ```
+
 ## What was done?
 
 - Created **S3 bucket** and uploaded frontend build  
@@ -33,6 +64,11 @@ DeployWebAppStack.deploymentCloudFrontURL05BF422F = <cloudfront-url>
 
 Open https://ddmswlyuv30b2.cloudfront.net in browser – the app is available globally.
 
-Links
-	•	CloudFront URL: https://ddmswlyuv30b2.cloudfront.net
-	•	S3 Bucket Name: deploywebappstack-deploymentfrontendbucket67ceb713-baqkestilsbo
+## Useful links
+- CloudFront: https://ddmswlyuv30b2.cloudfront.net/
+- API: https://b5x9a7w5n8.execute-api.eu-central-1.amazonaws.com/prod/products
+- S3 bucket: deploywebappstack-deploymentfrontendbucket67ceb713-baqkestilsbo
+
+---
+
+**Author:** Nika Beridze
