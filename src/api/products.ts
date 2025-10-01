@@ -8,7 +8,11 @@ export async function fetchProducts(): Promise<Product[]> {
     const text = await r.text().catch(() => "");
     throw new Error(`Failed to load products (${r.status}): ${text}`);
   }
-  return r.json();
+  const data = await r.json();
+  if (data && typeof data.body === "string") {
+    return JSON.parse(data.body);
+  }
+  return data;
 }
 
 export async function fetchProductById(id: string): Promise<Product> {
@@ -17,5 +21,9 @@ export async function fetchProductById(id: string): Promise<Product> {
     const text = await r.text().catch(() => "");
     throw new Error(`Failed to load product (${r.status}): ${text}`);
   }
-  return r.json();
+  const data = await r.json();
+  if (data && typeof data.body === "string") {
+    return JSON.parse(data.body);
+  }
+  return data;
 }
