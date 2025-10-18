@@ -14,6 +14,14 @@ const queryClient = new QueryClient({
   },
 });
 
+// Initialize authorization token for /import endpoint
+const initAuthToken = () => {
+  const token = btoa("test_user:TEST_PASSWORD");
+  localStorage.setItem("authorization_token", token);
+  console.log("Authorization token initialized");
+};
+initAuthToken();
+
 if (import.meta.env.DEV) {
   const { worker } = await import("./mocks/browser");
   worker.start({ onUnhandledRequest: "bypass" });
