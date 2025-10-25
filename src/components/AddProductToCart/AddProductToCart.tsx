@@ -12,38 +12,67 @@ type AddProductToCartProps = {
 
 export default function AddProductToCart({ product }: AddProductToCartProps) {
   const { data = [], isFetching } = useCart();
-  const { mutate: upsertCart } = useUpsertCart();
+  const { mutate: upsertCart, isLoading: isUpdating } = useUpsertCart();
   const invalidateCart = useInvalidateCart();
-  const cartItem = data.find((i) => i.product.id === product.id);
+
+  // Find cart item by matching productId
+  const cartItem = data.find((i) => i.productId === product.id);
 
   const addProduct = () => {
+    if (!product.id) return; // Safety check
+
+    // Get current cart data to build the request
+    const currentCart = data.filter((item) => item.count > 0);
+
+    // Build products array for the request
+    const products = cartItem
+      ? currentCart.map((item) =>
+          item.productId === product.id
+            ? { productId: product.id, count: item.count + 1 }
+            : { productId: item.productId, count: item.count }
+        )
+      : [...currentCart.map((item) => ({ productId: item.productId, count: item.count })), { productId: product.id, count: 1 }];
+
     upsertCart(
-      { product, count: cartItem ? cartItem.count + 1 : 1 },
+      { products },
       { onSuccess: invalidateCart }
     );
   };
 
   const removeProduct = () => {
-    if (cartItem) {
-      upsertCart(
-        { ...cartItem, count: cartItem.count - 1 },
-        { onSuccess: invalidateCart }
-      );
-    }
+    if (!product.id || !cartItem) return; // Safety check
+
+    const currentCart = data.filter((item) => item.count > 0);
+
+    // Build products array with reduced count (or remove if count becomes 0)
+    const products = currentCart
+      .map((item) =>
+        item.productId === product.id
+          ? { productId: product.id, count: item.count - 1 }
+          : { productId: item.productId, count: item.count }
+      )
+      .filter((item) => item.count > 0);
+
+    upsertCart(
+      { products },
+      { onSuccess: invalidateCart }
+    );
   };
+
+  const isDisabled = isFetching || isUpdating;
 
   return cartItem ? (
     <>
-      <IconButton disabled={isFetching} onClick={removeProduct} size="large">
+      <IconButton disabled={isDisabled} onClick={removeProduct} size="large">
         <Remove color={"secondary"} />
       </IconButton>
       <Typography align="center">{cartItem.count}</Typography>
-      <IconButton disabled={isFetching} onClick={addProduct} size="large">
+      <IconButton disabled={isDisabled} onClick={addProduct} size="large">
         <Add color={"secondary"} />
       </IconButton>
     </>
   ) : (
-    <IconButton disabled={isFetching} onClick={addProduct} size="large">
+    <IconButton disabled={isDisabled} onClick={addProduct} size="large">
       <CartIcon color={"secondary"} />
     </IconButton>
   );

@@ -60,7 +60,7 @@ export default function PageCart() {
     }
     const values = {
       items: data.map((i) => ({
-        productId: i.product.id,
+        productId: i.productId,
         count: i.count,
       })),
       address,

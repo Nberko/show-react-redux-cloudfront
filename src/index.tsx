@@ -14,6 +14,15 @@ const queryClient = new QueryClient({
   },
 });
 
+// Initialize authorization token for /import endpoint and cart service
+const initAuthToken = () => {
+  const token = btoa("username:password");
+  localStorage.setItem("authorization_token", token);
+  console.log("Authorization token initialized");
+};
+initAuthToken();
+
+// MSW only for local development (production uses real API)
 if (import.meta.env.DEV) {
   const { worker } = await import("./mocks/browser");
   worker.start({ onUnhandledRequest: "bypass" });

@@ -33,7 +33,8 @@ export default function Header() {
             underline="none"
             to="/"
           >
-            Nika Beridze - Module 2: Serving frontend application - CDK redeployment
+            Nika Beridze - Module 2: Serving frontend application - CDK
+            redeployment
           </Link>
         </Typography>
 
