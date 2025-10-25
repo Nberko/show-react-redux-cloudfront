@@ -22,11 +22,11 @@ const initAuthToken = () => {
 };
 initAuthToken();
 
-// Temporarily disable MSW to test with real API
-// if (import.meta.env.DEV) {
-//   const { worker } = await import("./mocks/browser");
-//   worker.start({ onUnhandledRequest: "bypass" });
-// }
+// MSW only for local development (production uses real API)
+if (import.meta.env.DEV) {
+  const { worker } = await import("./mocks/browser");
+  worker.start({ onUnhandledRequest: "bypass" });
+}
 
 const container = document.getElementById("app");
 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
