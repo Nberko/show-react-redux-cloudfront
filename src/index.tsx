@@ -14,18 +14,19 @@ const queryClient = new QueryClient({
   },
 });
 
-// Initialize authorization token for /import endpoint
+// Initialize authorization token for /import endpoint and cart service
 const initAuthToken = () => {
-  const token = btoa("test_user:TEST_PASSWORD");
+  const token = btoa("username:password");
   localStorage.setItem("authorization_token", token);
   console.log("Authorization token initialized");
 };
 initAuthToken();
 
-if (import.meta.env.DEV) {
-  const { worker } = await import("./mocks/browser");
-  worker.start({ onUnhandledRequest: "bypass" });
-}
+// Temporarily disable MSW to test with real API
+// if (import.meta.env.DEV) {
+//   const { worker } = await import("./mocks/browser");
+//   worker.start({ onUnhandledRequest: "bypass" });
+// }
 
 const container = document.getElementById("app");
 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion

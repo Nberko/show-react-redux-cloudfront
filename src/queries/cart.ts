@@ -11,7 +11,7 @@ import { enrichCartWithProducts } from "~/utils/cartUtils";
  */
 export function useCart() {
   return useQuery<EnrichedCartItem[], AxiosError>("cart", async () => {
-    const res = await axios.get<CartItem[]>(`${API_PATHS.cart}/profile/cart`, {
+    const res = await axios.get<CartItem[]>(`${API_PATHS.cart}/api/profile/cart`, {
       headers: {
         Authorization: `Basic ${localStorage.getItem("authorization_token")}`,
       },
@@ -51,7 +51,7 @@ export interface UpdateCartRequest {
  */
 export function useUpsertCart() {
   return useMutation((request: UpdateCartRequest) =>
-    axios.put<CartItem[]>(`${API_PATHS.cart}/profile/cart`, request, {
+    axios.put<CartItem[]>(`${API_PATHS.cart}/api/profile/cart`, request, {
       headers: {
         Authorization: `Basic ${localStorage.getItem("authorization_token")}`,
       },
@@ -64,7 +64,7 @@ export function useUpsertCart() {
  */
 export function useClearCart() {
   return useMutation(() =>
-    axios.delete(`${API_PATHS.cart}/profile/cart`, {
+    axios.delete(`${API_PATHS.cart}/api/profile/cart`, {
       headers: {
         Authorization: `Basic ${localStorage.getItem("authorization_token")}`,
       },
@@ -77,7 +77,7 @@ export function useClearCart() {
  */
 export function useCheckout() {
   return useMutation(() =>
-    axios.put(`${API_PATHS.cart}/profile/cart/order`, null, {
+    axios.put(`${API_PATHS.cart}/api/profile/cart/order`, null, {
       headers: {
         Authorization: `Basic ${localStorage.getItem("authorization_token")}`,
       },
