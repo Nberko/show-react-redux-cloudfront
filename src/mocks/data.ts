@@ -48,22 +48,20 @@ export const availableProducts: AvailableProduct[] = products.map(
 
 export const cart: CartItem[] = [
   {
-    product: {
-      description: "Short Product Description1",
-      id: "7567ec4b-b10c-48c5-9345-fc73c48a80aa",
-      price: 24,
-      title: "ProductOne",
-    },
+    id: "cart-item-uuid-1",
+    cartId: "cart-uuid-1",
+    productId: "7567ec4b-b10c-48c5-9345-fc73c48a80aa",
     count: 2,
+    createdAt: new Date("2025-10-25T10:00:00Z").toISOString(),
+    updatedAt: new Date("2025-10-25T10:30:00Z").toISOString(),
   },
   {
-    product: {
-      description: "Short Product Description7",
-      id: "7567ec4b-b10c-45c5-9345-fc73c48a80a1",
-      price: 15,
-      title: "ProductName",
-    },
+    id: "cart-item-uuid-2",
+    cartId: "cart-uuid-1",
+    productId: "7567ec4b-b10c-45c5-9345-fc73c48a80a1",
     count: 5,
+    createdAt: new Date("2025-10-25T11:00:00Z").toISOString(),
+    updatedAt: new Date("2025-10-25T11:15:00Z").toISOString(),
   },
 ];
 

@@ -2,40 +2,60 @@ import Typography from "@mui/material/Typography";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
-import { CartItem } from "~/models/CartItem";
+import { EnrichedCartItem } from "~/models/CartItem";
 import { formatAsPrice } from "~/utils/utils";
 import AddProductToCart from "~/components/AddProductToCart/AddProductToCart";
 
 type CartItemsProps = {
-  items: CartItem[];
+  items: EnrichedCartItem[];
   isEditable: boolean;
 };
 
 export default function CartItems({ items, isEditable }: CartItemsProps) {
-  const totalPrice: number = items.reduce(
-    (total, item) => item.count * item.product.price + total,
-    0
-  );
+  const totalPrice: number = items.reduce((total, item) => {
+    if (!item.product) return total;
+    return item.count * item.product.price + total;
+  }, 0);
 
   return (
     <>
       <List disablePadding>
-        {items.map((cartItem: CartItem) => (
-          <ListItem
-            sx={{ padding: (theme) => theme.spacing(1, 0) }}
-            key={cartItem.product.id}
-          >
-            {isEditable && <AddProductToCart product={cartItem.product} />}
-            <ListItemText
-              primary={cartItem.product.title}
-              secondary={cartItem.product.description}
-            />
-            <Typography variant="body2">
-              {formatAsPrice(cartItem.product.price)} x {cartItem.count} ={" "}
-              {formatAsPrice(cartItem.product.price * cartItem.count)}
-            </Typography>
-          </ListItem>
-        ))}
+        {items.map((cartItem: EnrichedCartItem) => {
+          // Handle case where product data might not be loaded
+          if (!cartItem.product) {
+            return (
+              <ListItem
+                sx={{ padding: (theme) => theme.spacing(1, 0) }}
+                key={cartItem.id}
+              >
+                <ListItemText
+                  primary="Loading product..."
+                  secondary={`Product ID: ${cartItem.productId}`}
+                />
+                <Typography variant="body2">
+                  Quantity: {cartItem.count}
+                </Typography>
+              </ListItem>
+            );
+          }
+
+          return (
+            <ListItem
+              sx={{ padding: (theme) => theme.spacing(1, 0) }}
+              key={cartItem.id}
+            >
+              {isEditable && <AddProductToCart product={cartItem.product} />}
+              <ListItemText
+                primary={cartItem.product.title}
+                secondary={cartItem.product.description}
+              />
+              <Typography variant="body2">
+                {formatAsPrice(cartItem.product.price)} x {cartItem.count} ={" "}
+                {formatAsPrice(cartItem.product.price * cartItem.count)}
+              </Typography>
+            </ListItem>
+          );
+        })}
         <ListItem sx={{ padding: (theme) => theme.spacing(1, 0) }}>
           <ListItemText primary="Shipping" />
           <Typography variant="body2">Free</Typography>

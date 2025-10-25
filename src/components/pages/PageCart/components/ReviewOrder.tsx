@@ -2,11 +2,11 @@ import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import CartItems from "~/components/CartItems/CartItems";
 import { FormikValues } from "formik";
-import { CartItem } from "~/models/CartItem";
+import { EnrichedCartItem } from "~/models/CartItem";
 
 type ReviewOrderProps = {
   address: FormikValues;
-  items: CartItem[];
+  items: EnrichedCartItem[];
 };
 
 export default function ReviewOrder({ address, items }: ReviewOrderProps) {

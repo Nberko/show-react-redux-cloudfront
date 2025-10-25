@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom";
 import PaperLayout from "~/components/PaperLayout/PaperLayout";
 import Typography from "@mui/material/Typography";
 import API_PATHS from "~/constants/apiPaths";
-import { CartItem } from "~/models/CartItem";
+import { EnrichedCartItem } from "~/models/CartItem";
 import { AvailableProduct } from "~/models/Product";
 import ReviewOrder from "~/components/pages/PageCart/components/ReviewOrder";
 import { OrderStatus, ORDER_STATUS_FLOW } from "~/constants/order";
@@ -55,14 +55,23 @@ export default function PageOrder() {
   ] = results;
   const { mutateAsync: updateOrderStatus } = useUpdateOrderStatus();
   const invalidateOrder = useInvalidateOrder();
-  const cartItems: CartItem[] = React.useMemo(() => {
+  const cartItems: EnrichedCartItem[] = React.useMemo(() => {
     if (order && products) {
-      return order.items.map((item: OrderItem) => {
+      return order.items.map((item: OrderItem, index: number) => {
         const product = products.find((p) => p.id === item.productId);
         if (!product) {
           throw new Error("Product not found");
         }
-        return { product, count: item.count };
+        // Create EnrichedCartItem for display purposes
+        return {
+          id: `order-item-${index}`,
+          cartId: order.id,
+          productId: item.productId,
+          count: item.count,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+          product,
+        };
       });
     }
     return [];
